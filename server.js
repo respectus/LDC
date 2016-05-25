@@ -24,7 +24,6 @@ server.get('/jsonify/:text', respond)
 server.head('/jsonify/:text', respond)
 
 server.listen(3000, function() {
-  var left = 9;
 	console.log('%s listening at %s', server.name, server.url)
 })
 
@@ -36,7 +35,6 @@ function respond(req, res, next) {
     }
 
     response = parser.parse(req.params.text)
-
     res.send(response)
     next()
 }
