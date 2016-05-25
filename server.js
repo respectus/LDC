@@ -18,13 +18,12 @@ var restify = require('restify')
 var server = restify.createServer()
 // Used pegrammar.txt to generate parser.js
 var parser = require('./parser');
-
 server.name = 'LogDNA Challenge - Muaz'
-// Since we aren't doing CRUD we only really need a get request and a response
-server.get('/:text', respond)
-server.head('/:text', respond)
 
-server.listen(process.env.PORT, function() {
+// Since we aren't doing CRUD we only really need a GET request and a response
+server.get('/jsonify/:text', respond)
+server.head('/jsonify/:text', respond)
+server.listen(process.env.PORT || 3000, function() {
 	console.log('%s listening at %s', server.name, server.url)
 })
 
@@ -34,7 +33,6 @@ function respond(req, res, next) {
     if(!checkParentheses(req.params.text)) {
       console.log("Incorrectly formatted parentheses")
     }
-
     response = parser.parse(req.params.text)
     res.send(response)
     next()
