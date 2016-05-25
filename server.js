@@ -28,7 +28,11 @@ server.use(restify.bodyParser());
    given on the length of the search query therefore I have chosen to use a POST
    request. */
 server.post('/jsonify', respond);
-//server.head('/jsonify/:text', respond)
+
+server.get(/\//, restify.serveStatic({
+  directory: './public',
+  file: 'index.html'
+}));
 server.listen(process.env.PORT || 3000, function() {
 	console.log('%s listening at %s', server.name, server.url)
 })
