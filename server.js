@@ -30,7 +30,7 @@ server.listen(3000, function() {
 
 // Main function: consumes plain text query and outputs JSON based on search rules shown above
 function respond(req, res, next) {
-    // Basic check for properly formatted parentheses
+    //Naive sanity check
     if(!checkParentheses(req.params.text)) {
       console.log("Incorrectly formatted parentheses")
     }
@@ -57,5 +57,3 @@ function checkParentheses(text) {
   }
   return count == 0
 }
-
-var pegGrammar = ""

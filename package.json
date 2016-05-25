@@ -1,17 +1,19 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.2.5",
-  "description": "A sample Node.js app using Express 4",
+  "name": "LD Challenge - Muaz",
+  "version": "0.1",
+  "description": "A simple text to JSON parser via ReST API",
   "engines": {
     "node": "5.9.1"
   },
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "ejs": "2.4.1",
-    "express": "4.13.3"
+    "express": "4.13.3",
+    "restify": "2.4.x",
+    
   },
   "repository": {
     "type": "git",
