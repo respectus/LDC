@@ -20,8 +20,9 @@ var server = restify.createServer()
 var parser = require('./parser');
 
 server.name = 'LogDNA Challenge - Muaz'
-server.get('/jsonify/:text', respond)
-server.head('/jsonify/:text', respond)
+// Since we aren't doing CRUD we only really need a get request and a response
+server.get(':text', respond)
+server.head(':text', respond)
 
 server.listen(process.env.PORT, function() {
 	console.log('%s listening at %s', server.name, server.url)
