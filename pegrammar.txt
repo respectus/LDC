@@ -1,0 +1,51 @@
+start
+  = logical_and
+
+logical_and
+  = left:logical_or ws+ right:logical_and { return {"$and":[left, right]}}
+  / logical_or
+
+logical_or
+  = left:inexact_match ws+ "OR" ws+ right:logical_or { return {"$or":[left, right]}}
+  / inexact_match
+
+inexact_match
+  = "<" left:exact_match {return {"$lt":left}}
+  / ">" left:exact_match {return {"$gt":left}}
+  / ">=" left:exact_match {return {"$gte":left}}
+  / "=<" left:exact_match {return {"$lte":left}}
+  / exact_match
+
+exact_match
+  = "=" left:inexact_match {return {"$eq": left}}
+  /lengthy
+
+lengthy
+  = "len(" left:token ")" { return {"$len" :parseInt(left)}}
+  /quoted
+
+quoted
+  = "\"" quote:quote_space "\"" {return {"$quoted" : quote}}
+  / negation
+
+negation
+  ="!" expr:bools {return {"$not":expr}}
+  / primary
+
+primary
+  = bools
+  / "(" logical_or:logical_or ")" { return logical_or; }
+
+bools
+  = "false" {return false}
+  / "true"  {return true}
+  / token
+
+token
+  = token:[a-zA-Z0-9_]+ { return token.join(""); }
+
+quote_space
+  = token:[a-zA-Z0-9_ ]+ { return token.join(""); }
+
+ws
+  = [ \t\r\n]
