@@ -13,16 +13,21 @@
  *        - using '=' denotes an exact match on the term following respective symbol
  *        - len(#) will allow us to match length of JSON data instead of actual value
  *        - 'true', 'false' will be matched to their boolean values instead of string values
+ *
+ *    API can be accessed at http://ldchallenge-muaz.herokuapp.com/jsonify  the plain text query should
+ *    be passed in with the POST request as the query parameter. Demonstrated in check.js
  */
 var restify = require('restify')
 var server = restify.createServer()
 // Used pegrammar.txt to generate parser.js
 var parser = require('./parser');
 server.name = 'LogDNA Challenge - Muaz'
+server.use(restify.bodyParser());
 
-// Since we aren't doing CRUD we only really need a GET request and a response
-//server.get('/jsonify/:text', respond)
-server.post('/jsonify/:text', respond);
+/* Typically a GET request is issued for searches, but there are no constraints
+   given on the length of the search query therefore I have chosen to use a POST
+   request. */
+server.post('/jsonify', respond);
 //server.head('/jsonify/:text', respond)
 server.listen(process.env.PORT || 3000, function() {
 	console.log('%s listening at %s', server.name, server.url)
@@ -30,11 +35,12 @@ server.listen(process.env.PORT || 3000, function() {
 
 // Main function: consumes plain text query and outputs JSON based on search rules shown above
 function respond(req, res, next) {
-    //Naive sanity check
-    if(!checkParentheses(req.params.text)) {
+    query = req.body.query
+    // Naive sanity check
+    if(!checkParentheses(query)) {
       console.log("Incorrectly formatted parentheses")
     }
-    response = parser.parse(req.params.text)
+    response = parser.parse(query)
     res.send(response)
     next()
 }
